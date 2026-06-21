@@ -1,0 +1,406 @@
+<!doctype html>
+<html lang="de">
+<head>
+  <meta charset="utf-8">
+  <title>Azuko Generation LLC</title>
+  <link rel="stylesheet" href="/css/dashboard.css">
+</head>
+<body>
+<div id="loginScreen" class="login-screen">
+  <div class="login-orb orb-a"></div>
+  <div class="login-orb orb-b"></div>
+  <section class="login-card">
+    <div class="login-kicker">local creator system</div>
+    <h1>Azuko Generation LLC</h1>
+    <p class="login-powered">powered by <a class="hpn-link" href="https://gitforjoe.github.io/" target="_blank" rel="noopener">HighPerformerNetwork</a></p>
+    <div class="login-engine">Azuko <span>Engine</span></div>
+    <p class="login-sub">Azuko Engine Dashboard · v2.0</p>
+    <label class="login-label">User</label>
+    <input id="loginUser" class="login-input" value="Azuko" autocomplete="off">
+    <button class="login-enter" onclick="enterAzukoLogin()">Enter</button>
+    <div id="loginVerified" class="verified-line hidden">verified High Performer ✅</div>
+    <div class="login-footer">
+      <div class="login-footer-links">
+        <button onclick="showLoginInfo('about')">About</button>
+        <button onclick="showLoginInfo('impressum')">Impressum</button>
+        <button onclick="showLoginInfo('contact')">Contact</button>
+      </div>
+      <div id="loginSocials" class="login-socials"></div>
+    </div>
+  </section>
+  <div id="loginInfoModal" class="login-info-modal hidden">
+    <div class="login-info-card">
+      <button class="modal-close" onclick="closeLoginInfo()">×</button>
+      <h2 id="loginInfoTitle">About</h2>
+      <p id="loginInfoText" class="muted">Azuko Generation LLC.</p>
+      <div id="loginInfoAction"></div>
+    </div>
+  </div>
+</div>
+
+<main class="app app-hidden">
+<header class="top">
+  <div class="brand"><h1>Azuko Generation LLC</h1><p class="brand-powered">powered by <a class="hpn-link" href="https://gitforjoe.github.io/" target="_blank" rel="noopener">HighPerformerNetwork</a></p><p class="brand-subline">Content Factory Dashboard</p></div>
+  <div class="top-right">
+    <div class="channel-profile-mini">
+      <span>Profile</span>
+      <select id="channelProfile" onchange="setChannelProfile(this.value)">
+        <option value="reddit-de">Reddit DE</option>
+        <option value="reddit-en" selected>Reddit EN</option>
+        <option value="roblox-de">Roblox DE</option>
+        <option value="roblox-en">Roblox EN</option>
+        <option value="fruits">Fruits</option>
+      </select>
+    </div>
+    <span class="badge">LOCAL · v2.0</span>
+    <div class="top-mode-switch" title="Process view">
+      <button id="simpleModeBtn" class="mode-mini active" onclick="setProcessMode('simple')">Simple</button>
+      <button id="codeModeBtn" class="mode-mini" onclick="setProcessMode('code')">Code</button>
+    </div>
+    <div class="profile-menu-wrap">
+      <button class="profile-btn compact-profile" onclick="toggleProfileMenu(event)"><span class="avatar">A</span><span>Azuko</span><span class="chevron">⌄</span></button>
+      <div id="profileMenu" class="profile-menu hidden">
+        <button onclick="openPage('home');closeProfileMenu()">Overview</button>
+        <button onclick="openPage('admin');closeProfileMenu()">Settings Home</button>
+        <button onclick="openControlSection('settings');closeProfileMenu()">App Settings</button>
+        <button onclick="openControlSection('assets');closeProfileMenu()">Assets</button>
+        <button onclick="openControlSection('changelog');closeProfileMenu()">Changelog</button>
+        <button onclick="openControlSection('links');closeProfileMenu()">Social Links</button>
+        <button onclick="logoutAzuko()" class="danger-menu">Logout</button>
+      </div>
+    </div>
+  </div>
+</header>
+
+<nav class="nav">
+  <button class="active" data-page="home">Overview</button>
+  <button data-page="engines">Engines</button>
+  <button data-page="create">Create</button>
+  <button data-page="ready">Ready</button>
+  <button data-page="schedule">Scheduler</button>
+  <button data-page="analytics">Analytics</button>
+  <button data-page="admin">Settings</button>
+</nav>
+
+<section class="stats">
+  <div class="card"><div class="stat-title">Videos</div><div class="stat-value" id="count">0</div></div>
+  <div class="card"><div class="stat-title">Ready</div><div class="stat-value" id="readyCount">0</div></div>
+  <div class="card"><div class="stat-title">Status</div><div class="stat-value" id="stage">Idle</div></div>
+  <div class="card"><div class="stat-title">Progress</div><div class="stat-value" id="progress">0%</div></div>
+</section>
+
+
+<section id="page-home" class="page active">
+  <section class="v2-quality-hero">
+    <div class="quality-card v2-main-quality">
+      <span>Video Quality</span>
+      <strong id="videoQualityScore">🟢 88/100</strong>
+      <small id="videoQualityHint">Clean output, ready to post.</small>
+    </div>
+    <div class="quality-card v2-main-quality">
+      <span>Story Quality</span>
+      <strong id="storyQualityScore">🟢 84/100</strong>
+      <small id="storyQualityHint">Conflict + payoff check.</small>
+    </div>
+    <div class="quality-card v2-main-quality">
+      <span>Subtitle Quality</span>
+      <strong id="subtitleQualityScore">🟢 92/100</strong>
+      <small id="subtitleQualityHint">Readable speed target.</small>
+    </div>
+  </section>
+
+  <section class="v2-workflow-grid">
+    <button class="workflow-card primary-workflow" onclick="openPage('create')">
+      <span>Generate</span>
+      <b>Start Video</b>
+      <small>Fake Reddit now · more engines prepared</small>
+    </button>
+    <button class="workflow-card" onclick="openPage('engines')">
+      <span>Azuko Engine</span>
+      <b>Engine Hub</b>
+      <small>Reddit · Roblox · Fruits</small>
+    </button>
+    <button class="workflow-card" onclick="openPage('ready')">
+      <span>Post</span>
+      <b>Ready To Post</b>
+      <small>Captions hidden until click</small>
+    </button>
+    <button class="workflow-card" onclick="openPage('videos')">
+      <span>Library</span>
+      <b>Videos</b>
+      <small>Local output folder</small>
+    </button>
+  </section>
+
+  <div class="overview-grid v2-overview">
+    <div class="card overview-panel">
+      <div class="section-kicker">Today</div>
+      <h2>Production</h2>
+      <div id="overviewMetrics" class="admin-metrics compact-metrics"></div>
+    </div>
+    <div class="card overview-panel">
+      <div class="section-kicker">System</div>
+      <h2>Foundation</h2>
+      <div id="overviewSystem" class="mini-system-list clean-system-list"></div>
+    </div>
+  </div>
+</section>
+
+<section id="page-engines" class="page">
+  <div class="engine-page-head card">
+    <div>
+      <div class="section-kicker">Azuko Engine</div>
+      <h2>Engine Hub</h2>
+      <p class="muted">One clean place to start every content engine. Scores change by engine type.</p>
+    </div>
+    <button class="action primary-small" onclick="openPage('create')">Start Create</button>
+  </div>
+
+  <div id="engineHubCards" class="engine-hub-grid"></div>
+
+  <div class="two v2-engine-lower">
+    <div class="card">
+      <div class="section-kicker">Selected Engine</div>
+      <h2 id="engineScoreTitle">Fake Reddit Quality</h2>
+      <div id="engineScoreCards" class="engine-score-grid"></div>
+    </div>
+    <div class="card">
+      <div class="section-kicker">Gangster Fruits Foundation</div>
+      <h2>Characters</h2>
+      <div id="fruitCharacters" class="fruit-card-grid"></div>
+    </div>
+  </div>
+</section>
+
+<section id="page-create" class="page">
+  <div class="layout">
+    <aside class="card">
+      <div class="section-kicker">Create</div>
+      <h2>Generate Video</h2>
+      <label>Engine</label>
+      <select id="engineMode" onchange="setEngineMode(this.value)">
+        <option value="reddit" selected>Fake Reddit Story</option>
+        <option value="roblox">Roblox Rant (Foundation)</option>
+        <option value="fruits">Gangster Fruits (Foundation)</option>
+      </select>
+      <div id="engineCreateHint" class="info-card compact-info">Reddit Engine aktiv. Hook Score wird hier angezeigt.</div>
+      <label>Story-Quelle</label>
+      <select id="source"><option value="local">Fake Reddit Story</option><option value="reddit">Echte Reddit-Posts</option></select>
+
+      <div id="localTypeWrap">
+        <label>Lokale Story-Richtung</label>
+        <select id="storyType">
+          <option value="random">Random</option>
+          <option value="family-drama">Family Drama</option>
+          <option value="aita">AITA</option>
+          <option value="inheritance">Inheritance</option>
+          <option value="revenge">Revenge / Karma</option>
+          <option value="cheating">Cheating</option>
+          <option value="work-drama">Work Drama</option>
+          <option value="crazy-neighbor">Crazy Neighbor</option>
+          <option value="mystery">Mystery</option>
+        </select>
+      </div>
+
+      <div id="subredditWrap" class="hidden">
+        <label>Subreddit</label>
+        <select id="subreddit"><option>AskReddit</option><option>AmItheAsshole</option><option>TrueOffMyChest</option><option>confession</option><option>nosleep</option></select>
+      </div>
+
+      <label>Keywords / Thema</label><input id="keywords" placeholder="family drama, revenge, inheritance">
+      <label>Eigene Richtung</label><textarea id="direction" placeholder="Optional: inheritance, family fight, revenge, crazy neighbor..."></textarea>
+      <div class="hint">Optional. Leer lassen = Azuko Engine wählt sauber nach Story-Richtung.</div>
+
+      <label>Story Mode</label>
+      <select id="storyMode"><option value="full">Full Story</option><option value="question" selected>Question Ending</option><option value="soft">Soft Cliffhanger</option><option value="hard">Hard Cliffhanger</option><option value="auto">Auto Mix</option></select>
+      <div class="hint" id="storyInfo">Question Ending endet mit einer Frage, damit Leute kommentieren.</div>
+
+      <div class="toggle-card preview-toggle-card">
+        <div class="toggle-copy">
+          <b>Story Preview</b>
+          <span>Vor dem Rendern kurz prüfen. Aus = sofort rendern, an = Story ansehen und neu generieren.</span>
+        </div>
+        <label class="switch" title="Story Preview aktivieren">
+          <input id="storyPreviewEnabled" type="checkbox">
+          <span class="slider"></span>
+        </label>
+      </div>
+
+      <label>Sprache</label>
+      <div class="segment" data-target="language"><button type="button" class="choice active" data-value="en">🇺🇸 English</button><button type="button" class="choice" data-value="de">🇩🇪 Deutsch</button></div>
+      <input type="hidden" id="language" value="en">
+
+      <label>Voice</label>
+      <div class="segment" data-target="voiceGender"><button type="button" class="choice active" data-value="female">Female</button><button type="button" class="choice" data-value="male">Male</button></div>
+      <input type="hidden" id="voiceGender" value="female">
+
+      <label>Ziel-Länge</label>
+      <div class="segment seg3" data-target="duration"><button type="button" class="choice active" data-value="15">15s</button><button type="button" class="choice" data-value="30">30s</button><button type="button" class="choice" data-value="62">1:02</button></div>
+      <input type="hidden" id="duration" value="15">
+      <div id="lengthInfo" class="info-card compact-info">Länge wird geladen...</div>
+
+      <label>Plattform</label>
+      <select id="platform"><option value="youtube">YouTube Shorts</option><option value="tiktok">TikTok</option><option value="both" selected>Beides</option></select>
+      <div class="info-card">
+        <b>Pipeline</b>
+        <span>Generate baut die Story. Render erstellt Voice, Untertitel und Video. Danach werden TikTok Ready und YouTube Scheduled automatisch vorbereitet.</span>
+      </div>
+      <button id="btn" class="primary" onclick="generate()">Generate Video</button>
+    </aside>
+
+    <section>
+      <div class="card">
+        <div class="status-head"><h2>Status</h2><span class="pill" id="msg">Bereit</span></div>
+        <div class="bar"><div class="fill" id="fill"></div></div>
+        <div id="simpleProcess" class="process-simple">
+          <div class="steps"><div class="step" id="s-starting">Start</div><div class="step" id="s-story">Story</div><div class="step" id="s-voiceover">Voice</div><div class="step" id="s-subtitles">Subs</div><div class="step" id="s-rendering">Render</div></div>
+          <div class="simple-flow">
+            <div>Generate</div><span>→</span><div>Render</div><span>→</span><div>TikTok Ready</div><span>→</span><div>YouTube Scheduled</div>
+          </div>
+        </div>
+        <div id="codeProcess" class="process-code hidden">
+          <div id="liveCodeLog" class="code code-tall">[system.ready] Azuko Generation LLC wartet auf Start...</div>
+        </div>
+      </div>
+
+      <div id="storyPreviewPanel" class="card story-preview-card hidden">
+        <div class="preview-head">
+          <div>
+            <h2>Story Preview</h2>
+            <p class="muted">Nur sichtbar, wenn Preview aktiviert ist. Du kannst neu generieren oder genau diese Story rendern.</p>
+          </div>
+          <span id="storyPreviewMeta" class="pill">not generated</span>
+        </div>
+        <div id="storyPreviewText" class="story-preview-text">Noch keine Preview erstellt.</div>
+        <div id="previewLengthFacts" class="length-facts"></div>
+        <div class="actions preview-actions">
+          <button class="action" onclick="loadStoryPreview(true)">Regenerate Story</button>
+          <button class="action primary-small" onclick="generate()">Render This Story</button>
+          <button class="action" onclick="clearStoryPreview()">Clear</button>
+        </div>
+      </div>
+    </section>
+  </div>
+</section>
+
+<section id="page-ready" class="page">
+  <div class="card ready-v2-head">
+    <div>
+      <div class="section-kicker">Ready</div>
+      <h2>Ready To Post</h2>
+      <p class="muted">Wenig Text. Öffne Details nur, wenn du Caption, Tags oder Schedule brauchst.</p>
+    </div>
+    <span class="status-chip">clean mode</span>
+  </div>
+  <div id="ready-all" class="ready-box ready-cards-grid"></div>
+</section>
+<section id="page-videos" class="page"><div class="card"><h2>Video Library</h2><div id="videos-all" class="file-list"></div></div></section>
+<section id="page-schedule" class="page"><div class="two"><div class="card"><h2>YouTube Scheduler</h2><p class="muted">Auto Queue: Nach dem Rendern wird automatisch ein YouTube Schedule Preview erstellt. Echter Upload kommt später. v1.9 bereitet nur die SaaS-Struktur vor.</p><div id="ytSchedule" class="schedule-list"></div></div><div class="card"><h2>Connected Channels</h2><div id="channelAccounts" class="file-list"></div></div></div></section>
+<section id="page-analytics" class="page">
+  <div class="two">
+    <div class="card"><div class="section-kicker">Analytics</div><h2>Local Production</h2><div class="row"><b>Videos lokal</b><span id="statVideos">0</span></div><div class="row"><b>Ready Items</b><span id="statReady">0</span></div><div class="row"><b>Speicher Videos</b><span id="statSize">0 MB</span></div></div>
+    <div class="card"><div class="section-kicker">Coming later</div><h2>Platform Performance</h2><div class="placeholder-stack"><div>YouTube views / watchtime — Coming later</div><div>TikTok performance — Coming later</div><div>Learning System — Coming later</div></div></div>
+  </div>
+</section>
+<section id="page-roadmap" class="page"><div class="card"><h2>Zukünftige Pläne</h2><div class="roadmap"><div class="road"><b>v1.4.1 Stable Base</b><p class="muted">START.bat → Home → Fake Reddit Generator.</p><span class="tag">jetzt</span></div><div class="road"><b>v1.5 YouTube Queue</b><p class="muted">Videos vorbereiten und YouTube Veröffentlichungen planen.</p><span class="tag">nächster Schritt</span></div><div class="road"><b>v2.0 Content Factory</b><p class="muted">Gangster Fruits, AI Fruits, Text Messages, POV, Mystery und Facts.</p><span class="tag">später</span></div></div></div></section>
+
+<section id="page-admin-login" class="page">
+  <div class="card admin-card"><h2>Settings</h2><p class="muted">Already verified as High Performer.</p><button class="primary" onclick="openPage('admin')">Open Settings</button></div>
+</section>
+
+<section id="page-admin" class="page">
+  <div class="admin-hero card control-hero">
+    <div>
+      <h2>Azuko Generation LLC Settings</h2>
+      <p class="muted">Clean foundation for settings, links, assets, changelog, backup, cleanup and Azuko Engine Lab.</p>
+    </div>
+    <div class="admin-version"><span>Current Version</span><b>v1.9.3</b><small id="adminLastUpdated">Last Updated: Today</small></div>
+  </div>
+
+  <div class="control-layout">
+    <aside class="control-sidebar card">
+      <div class="section-kicker">Settings</div>
+      <button class="control-nav-btn active" data-control="overview" onclick="openControlSection('overview')">Overview</button>
+      <button class="control-nav-btn" data-control="settings" onclick="openControlSection('settings')">Settings</button>
+      <button class="control-nav-btn" data-control="links" onclick="openControlSection('links')">Social Links</button>
+      <button class="control-nav-btn" data-control="assets" onclick="openControlSection('assets')">Assets</button>
+      <button class="control-nav-btn" data-control="changelog" onclick="openControlSection('changelog')">Changelog</button>
+      <button class="control-nav-btn" data-control="backup" onclick="openControlSection('backup')">Backup</button>
+      <button class="control-nav-btn" data-control="lab" onclick="openControlSection('lab')">Lab</button>
+      <button class="control-nav-btn" data-control="system" onclick="openControlSection('system')">System</button>
+    </aside>
+
+    <div class="control-main">
+      <div id="control-overview" class="control-page active">
+        <div class="admin-grid">
+          <div class="card admin-section control-card"><div class="section-kicker">Dashboard</div><h2>Overview</h2><div id="adminDashboard" class="admin-metrics"></div></div>
+          <div class="card admin-section control-card"><div class="section-kicker">Live Activity</div><h2>Process</h2><div id="adminLiveActivity" class="activity-list"></div></div>
+          <div class="card admin-section control-card"><div class="section-kicker">Analytics</div><h2>Production Stats</h2><div id="adminStats"></div></div>
+          <div class="card admin-section control-card"><div class="section-kicker">Scheduler</div><h2>YouTube Scheduler Preview</h2><div id="adminScheduler" class="schedule-list"></div></div>
+        </div>
+      </div>
+
+      <div id="control-settings" class="control-page">
+        <div class="admin-grid">
+          <div class="card admin-section control-card"><div class="section-kicker">Settings</div><h2>Studio Settings</h2><div id="adminSettings"></div></div>
+          <div class="card admin-section control-card"><div class="section-kicker">Cleanup</div><h2>Local Cleanup</h2><div id="adminCleanup"></div></div>
+          <details class="card admin-section wide help-accordion" open>
+            <summary><div><div class="section-kicker">Help</div><h2>Wie Azuko Generation LLC funktioniert</h2></div><span>Show / Hide</span></summary>
+            <div class="help-grid">
+              <div class="help-card"><b>Overview</b><span>Dein Startbereich: Status, Produktion, Ready To Post und aktive Azuko Engine(s).</span></div>
+              <div class="help-card"><b>Create</b><span>Hier entstehen Story, Voice, Untertitel und Video.</span></div>
+              <div class="help-card"><b>Ready</b><span>Fertige Videos als Karten. Details erst auf Klick, damit nichts überladen wirkt.</span></div>
+              <div class="help-card"><b>Settings</b><span>Settings, Assets, Changelog, Backup, Cleanup, Lab und System als echte Seiten.</span></div>
+            </div>
+          </details>
+        </div>
+      </div>
+
+      <div id="control-links" class="control-page">
+        <div class="admin-grid">
+          <div class="card admin-section control-card"><div class="section-kicker">Profile</div><h2>Social Links & Contact</h2><div id="adminLinks"></div></div>
+          <div class="card admin-section control-card"><div class="section-kicker">Login Screen</div><h2>Footer Links</h2><div class="placeholder-stack"><div><b>About</b><span>Shown on login/start screen.</span></div><div><b>Impressum</b><span>Placeholder page for later legal details.</span></div><div><b>Contact</b><span>Uses the email you enter here.</span></div></div></div>
+        </div>
+      </div>
+
+      <div id="control-assets" class="control-page">
+        <div class="admin-grid">
+          <div class="card admin-section control-card"><div class="section-kicker">Assets</div><h2>Backgrounds & Files</h2><div id="adminAssets"></div></div>
+          <div class="card admin-section control-card"><div class="section-kicker">Connected Accounts</div><h2>Accounts</h2><div id="adminAccounts"></div></div>
+        </div>
+      </div>
+
+      <div id="control-changelog" class="control-page">
+        <div class="card admin-section wide control-card"><div class="section-kicker">Changelog</div><h2>Version Tracking</h2><div id="adminChangelog" class="changelog-list"></div></div>
+      </div>
+
+      <div id="control-backup" class="control-page">
+        <div class="admin-grid">
+          <div class="card admin-section control-card"><div class="section-kicker">Backup</div><h2>Backup</h2><div id="adminBackup"></div></div>
+          <div class="card admin-section control-card"><div class="section-kicker">Cleanup</div><h2>Local Cleanup</h2><div id="adminCleanupMirror"></div></div>
+        </div>
+      </div>
+
+      <div id="control-lab" class="control-page">
+        <div class="card admin-section control-card"><div class="section-kicker">Lab</div><h2>Azuko Engine Lab</h2><div id="adminLab"></div></div>
+      </div>
+
+      <div id="control-system" class="control-page">
+        <div class="admin-grid">
+          <div class="card admin-section control-card"><div class="section-kicker">Error Center</div><h2>Problems</h2><div id="adminErrors"></div></div>
+          <div class="card admin-section wide control-card"><div class="section-kicker">System</div><h2>System Health</h2><div id="adminSystem"></div></div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<div id="toast" class="toast hidden">
+  <button class="toast-close" onclick="closeToast()" aria-label="Close">×</button>
+  <div class="toast-main"><b id="toastTitle">Video fertig</b><p id="toastText">Ready To Post erstellt.</p></div>
+  <a id="toastDownload" class="toast-btn" href="#" download>Download</a>
+</div>
+</main>
+<script src="/js/dashboard.js"></script>
+</body>
+</html>
